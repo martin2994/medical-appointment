@@ -4,6 +4,16 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
+## Prerequisites
+
+- Java 21
+- Docker
+
+## Running the development database
+
+You can find in the `docker-compopose.yaml` file the service to run a PostgreSQL database.
+The database will be automatically provisioned by flyway when the application is started.
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
@@ -53,6 +63,14 @@ You can then execute your native executable with: `./target/medical-appointment-
 
 If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
 
+## Create image
+
+You can create an image using:
+```shell script
+docker build -f src/main/docker/Dockerfile.jvm -t quarkus/medical-appointment-jvm .
+```
+Then use it in the `docker-compose.yaml`.
+
 ## Related Guides
 
 - REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and
@@ -66,3 +84,13 @@ If you want to learn more about building native executables, please consult <htt
 Easily start your REST Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+
+### TODO
+- Add IT with an h2 database
+- Add search filter for visit and patient
+- Add Authorization (Use Quarkus Keycloak dev tools)
+- Add Swagger / OpenApi documentation
+- Add Postman collection in project
+- Check image creation with jib
+- On Visit object maybe add the doctor name and search by doctor name
+- Encrypt data / check logger for sensitive data 

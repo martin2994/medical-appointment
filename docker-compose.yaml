@@ -9,6 +9,19 @@ services:
       POSTGRES_DB: medicalappointment
     ports:
       - 5432:5432
+    networks:
+      - medical-appointment
     volumes:
       - ./db-postgres/db:/var/lib/postgresql/data
       - ./db-postgres/import:/import
+  medical-appointment:
+    container_name: medical-appointment
+    image: quarkus/medical-appointment-jvm
+    ports:
+        - 8080:8080
+    networks:
+      - medical-appointment
+networks:
+  medical-appointment:
+    name: medical-appointment-network
+    driver: bridge
