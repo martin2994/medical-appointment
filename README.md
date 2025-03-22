@@ -86,11 +86,16 @@ Easily start your REST Web Services
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
 
 ### TODO
-- Add IT with an h2 database
+- Add more javadoc + comments + package-info
+- Handle not found object correctly on GET/UPDATE/DELETE by id
+- Add UT on constraint error
+- Add IT with a h2 database
 - Add search filter for visit and patient
+- Add field validation constraints
+- Handle correctly exceptions with ServerExceptionMappers
 - Add Authorization (Use Quarkus Keycloak dev tools)
 - Add Swagger / OpenApi documentation
-- Add Postman collection in project
 - Check image creation with jib
+- Add a way to include or not patient data in the visit and the visit list in the patient
 - On Visit object maybe add the doctor name and search by doctor name
-- Encrypt data / check logger for sensitive data 
+- Encrypt data / check logger for sensitive data

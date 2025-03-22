@@ -6,6 +6,7 @@ import com.project.medicalappointment.patient.application.model.Patient;
 import com.project.medicalappointment.patient.infrastructure.database.mapper.PatientMapper;
 import com.project.medicalappointment.patient.infrastructure.database.model.PatientEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.mock.PanacheMock;
 import io.quarkus.test.InjectMock;
@@ -59,13 +60,17 @@ class PatientDatabaseAdapterTest {
     @Test
     void getPatients() {
         List<PanacheEntityBase> patientEntities = List.of(PatientMapper.INSTANCE.toEntity(patient));
-        when(PatientEntity.listAll()).thenReturn(patientEntities);
+        PanacheQuery<PanacheEntityBase> query = mock(PanacheQuery.class);
 
-        Page<Patient> patients = patientDatabaseAdapter.getPatients();
+        when(PatientEntity.findAll()).thenReturn(query);
+        when(query.page(anyInt(), anyInt())).thenReturn(query);
+        when(query.list()).thenReturn(patientEntities);
+
+        Page<Patient> patients = patientDatabaseAdapter.getPatients(0,10);
 
         assertNotNull(patients);
         assertEquals(1, patients.content().size());
-        PanacheMock.verify(PatientEntity.class, times(1)).listAll();
+        PanacheMock.verify(PatientEntity.class, times(1)).findAll();
     }
 
     @Test

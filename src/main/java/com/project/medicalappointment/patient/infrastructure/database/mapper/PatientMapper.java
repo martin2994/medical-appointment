@@ -6,6 +6,9 @@ import com.project.medicalappointment.patient.infrastructure.database.model.Pati
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapper to transform functional patient to patient entity and inversely
+ */
 @Mapper
 public interface PatientMapper {
 

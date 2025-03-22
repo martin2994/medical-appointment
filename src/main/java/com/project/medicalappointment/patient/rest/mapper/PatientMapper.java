@@ -6,6 +6,9 @@ import com.project.medicalappointment.patient.rest.model.PatientDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Mapper to transform functional patient to patient DTO and inversely
+ */
 @Mapper
 public interface PatientMapper {
 

@@ -5,12 +5,16 @@ import com.project.medicalappointment.patient.application.PatientDatabasePort;
 import com.project.medicalappointment.patient.application.model.Patient;
 import com.project.medicalappointment.patient.infrastructure.database.mapper.PatientMapper;
 import com.project.medicalappointment.patient.infrastructure.database.model.PatientEntity;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Implementation of the Patient database port to handle all CRUD method in a relational database
+ */
 @ApplicationScoped
 public class PatientDatabaseAdapter implements PatientDatabasePort {
 
@@ -22,9 +26,10 @@ public class PatientDatabaseAdapter implements PatientDatabasePort {
     }
 
     @Override
-    public Page<Patient> getPatients() {
-        List<PatientEntity> patientEntities = PatientEntity.listAll();
-        Page<PatientEntity> patientEntityPage = new Page<>(patientEntities);
+    public Page<Patient> getPatients(int page, int pageSize) {
+        PanacheQuery<PatientEntity> query = PatientEntity.findAll();
+        List<PatientEntity> patientEntities = query.page(page, pageSize).list();
+        Page<PatientEntity> patientEntityPage = new Page<>(page, pageSize, patientEntities);
         return PatientMapper.INSTANCE.toPatient(patientEntityPage);
     }
 

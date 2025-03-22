@@ -1,5 +1,6 @@
 package com.project.medicalappointment.patient.infrastructure.database.model;
 
+import com.project.medicalappointment.visit.infrastructure.database.model.VisitEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,8 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
+/**
+ * The patient entity model in a relational database
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,8 +30,11 @@ public class PatientEntity extends PanacheEntityBase {
 
     private LocalDate birthdate;
 
-    @Column(name ="social_security_number", unique = true, nullable = false, updatable = false, length = 15)
+    @Column(name ="social_security_number")
     private String socialSecurityNumber;
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<VisitEntity> visits;
 
     @PrePersist
     public void generateUUID() {

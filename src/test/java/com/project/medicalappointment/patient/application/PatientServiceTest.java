@@ -46,15 +46,15 @@ class PatientServiceTest {
 
     @Test
     public void getPatients() {
-        Page<Patient> patientPage = new Page<>(List.of(patient));
-        when(patientDatabasePort.getPatients()).thenReturn(patientPage);
+        Page<Patient> patientPage = new Page<>(0,10,List.of(patient));
+        when(patientDatabasePort.getPatients(0,10)).thenReturn(patientPage);
 
-        Page<Patient> patients = patientService.getPatients();
+        Page<Patient> patients = patientService.getPatients(0,10);
 
         assertNotNull(patients);
         assertEquals(1, patients.content().size());
         assertEquals(patient.name(), patients.content().getFirst().name());
-        verify(patientDatabasePort, times(1)).getPatients();
+        verify(patientDatabasePort, times(1)).getPatients(0,10);
     }
 
     @Test

@@ -37,8 +37,8 @@ class PatientResourceTest {
         @Test
         public void ok() {
             Patient patient = new Patient(UUID.randomUUID(), "Dupond", "Jeanne", LocalDate.of(2000, 1, 1), "200133456789012");
-            Page<Patient> page = new Page<>(List.of(patient));
-            when(patientService.getPatients()).thenReturn(page);
+            Page<Patient> page = new Page<>(0, 10, List.of(patient));
+            when(patientService.getPatients(0, 10)).thenReturn(page);
 
             Page<PatientDTO> responseBody = given()
                     .when().get("/patients")
@@ -46,11 +46,12 @@ class PatientResourceTest {
                     .statusCode(OK.getStatusCode())
                     .extract()
                     .body()
-                    .as(new TypeRef<>() {});
+                    .as(new TypeRef<>() {
+                    });
 
             assertEquals(1, responseBody.content().size());
-            assertEquals("Dupond", responseBody.content().getFirst().name());
-            assertEquals("Jeanne", responseBody.content().getFirst().surname());
+            assertEquals(patient.name(), responseBody.content().getFirst().name());
+            assertEquals(patient.surname(), responseBody.content().getFirst().surname());
         }
     }
 
@@ -92,7 +93,7 @@ class PatientResourceTest {
                     .then()
                     .statusCode(OK.getStatusCode())
                     .body("uuid", equalTo(patientId.toString()))
-                    .body("name", equalTo("Dupond"));
+                    .body("name", equalTo(patient.name()));
         }
 
     }
@@ -115,7 +116,7 @@ class PatientResourceTest {
                     .then()
                     .statusCode(OK.getStatusCode())
                     .body("uuid", equalTo(patientId.toString()))
-                    .body("name", equalTo("Dupond"));
+                    .body("name", equalTo(patient.name()));
         }
 
         @Test
@@ -144,7 +145,7 @@ class PatientResourceTest {
             given()
                     .when().delete("/patients/" + patientId)
                     .then()
-                    .statusCode(OK.getStatusCode());
+                    .statusCode(NO_CONTENT.getStatusCode());
         }
     }
 
